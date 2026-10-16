@@ -1,0 +1,50 @@
+{
+  "$schema": "https://biomejs.dev/schemas/2.5.15/schema.json",
+  "vcs": {
+    "enabled": true,
+    "clientKind": "git",
+    "useIgnoreFile": true
+  },
+  "files": {
+    "ignoreUnknown": true,
+    "includes": ["**", "!!src/routeTree.gen.ts"]
+  },
+  "formatter": {
+    "enabled": true,
+    "indentStyle": "space",
+    "indentWidth": 2,
+    "lineWidth": 120
+  },
+  "linter": {
+    "enabled": true,
+    "rules": { "preset": "recommended" }
+  },
+  "javascript": {
+    "formatter": { "quoteStyle": "double", "semicolons": "asNeeded" }
+  },
+  "css": {
+    "parser": { "tailwindDirectives": true }
+  },
+  "assist": {
+    "enabled": true,
+    "actions": { "source": { "organizeImports": "on" } }
+  },
+  "overrides": [
+    {
+      "includes": ["src/components/jalco/**"],
+      "linter": { "rules": { "suspicious": { "noArrayIndexKey": "off" } } }
+    },
+    {
+      "includes": ["src/components/jalco/code-block.tsx"],
+      "linter": { "rules": { "security": { "noDangerouslySetInnerHtml": "off" } } }
+    },
+    {
+      "includes": ["src/components/jalco/file-tree.tsx"],
+      "linter": { "rules": { "a11y": { "useSemanticElements": "off" } } }
+    },
+    {
+      "includes": ["src/styles/globals.css"],
+      "linter": { "rules": { "complexity": { "noImportantStyles": "off" } } }
+    }
+  ]
+}
