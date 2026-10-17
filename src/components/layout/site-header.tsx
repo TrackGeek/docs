@@ -8,7 +8,7 @@ import { Badge } from "@/components/ui/badge"
 import { Button, buttonVariants } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
-import { apiReferenceEnabled, repositoryUrl } from "@/constants/docs"
+import { repositoryUrl } from "@/constants/docs"
 import { useDocsSearch } from "@/hooks/use-docs-search"
 
 export function SiteHeader() {
@@ -42,15 +42,13 @@ export function SiteHeader() {
           >
             Self-hosting
           </Link>
-          {apiReferenceEnabled && (
-            <Link
-              to="/api-reference"
-              search={{}}
-              className={`relative flex h-full items-center text-sm ${api ? "font-medium after:absolute after:inset-x-0 after:bottom-0 after:h-0.5 after:bg-primary" : "text-muted-foreground hover:text-foreground"}`}
-            >
-              API Reference
-            </Link>
-          )}
+          <Link
+            to="/api-reference"
+            search={{}}
+            className={`relative flex h-full items-center text-sm ${api ? "font-medium after:absolute after:inset-x-0 after:bottom-0 after:h-0.5 after:bg-primary" : "text-muted-foreground hover:text-foreground"}`}
+          >
+            API Reference
+          </Link>
         </nav>
         <div className="ml-auto flex items-center gap-1.5 sm:gap-3">
           <Button
