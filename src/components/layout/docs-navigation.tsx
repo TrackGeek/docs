@@ -1,7 +1,7 @@
 import { Link, useLocation } from "@tanstack/react-router"
 import { BookOpen, ChevronRight } from "lucide-react"
 import { HttpMethodBadge } from "@/components/api-reference/http-method-badge"
-import { apiArticleGroups, apiArticles, apiReferenceEnabled, articleGroups, articles } from "@/constants/docs"
+import { apiArticleGroups, apiArticles, articleGroups, articles } from "@/constants/docs"
 import type { Article } from "@/types/docs"
 import { getArticleLocation } from "@/utils/article-location"
 
@@ -12,16 +12,14 @@ export function DocsNavigation({ onNavigate }: { onNavigate?: () => void }) {
 
   return (
     <nav aria-label="Documentation" className="flex min-h-full flex-col">
-      {apiReferenceEnabled && (
-        <Link
-          {...getArticleLocation(api ? articles[0] : apiArticles[0])}
-          search={(previous) => ({ ...previous, q: "" })}
-          onClick={onNavigate}
-          className="mb-4 px-3 text-xs text-muted-foreground hover:text-foreground"
-        >
-          {api ? "← Self-hosting guides" : "API Reference →"}
-        </Link>
-      )}
+      <Link
+        {...getArticleLocation(api ? articles[0] : apiArticles[0])}
+        search={(previous) => ({ ...previous, q: "" })}
+        onClick={onNavigate}
+        className="mb-4 px-3 text-xs text-muted-foreground hover:text-foreground"
+      >
+        {api ? "← Self-hosting guides" : "API Reference →"}
+      </Link>
       <div className="mb-7 flex items-center gap-2.5 rounded-lg border bg-card px-3 py-3 text-sm font-medium">
         <span className="flex size-7 items-center justify-center rounded-md bg-accent text-accent-foreground">
           <BookOpen className="size-4" aria-hidden="true" />

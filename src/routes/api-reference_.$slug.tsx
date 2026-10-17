@@ -6,14 +6,10 @@ import { ArticleMarkdown } from "@/components/docs/article-markdown"
 import { ArticlePagination } from "@/components/docs/article-pagination"
 import { ArticleToc } from "@/components/docs/article-toc"
 import { DocsSidebar } from "@/components/layout/docs-sidebar"
-import { apiReferenceEnabled } from "@/constants/docs"
 import { apiArticleSlugSchema } from "@/utils/docs-schemas"
 import { loadApiArticle } from "@/utils/load-article"
 
 export const Route = createFileRoute("/api-reference_/$slug")({
-  beforeLoad: () => {
-    if (!apiReferenceEnabled) throw notFound()
-  },
   params: {
     parse: ({ slug }) => {
       const result = apiArticleSlugSchema.safeParse(slug)
@@ -30,10 +26,10 @@ function ApiArticleRoute() {
   const { article, markdown, headings, endpoint, copyMarkdown } = Route.useLoaderData()
 
   return (
-    <div className="mx-auto flex max-w-[1440px]">
+    <div className="mx-auto flex max-w-360">
       <DocsSidebar />
       <main id="main-content" className="min-w-0 flex-1 px-5 pt-8 pb-12 sm:px-9 lg:px-12 lg:pt-10" key={article.slug}>
-        <div className="mx-auto max-w-[760px]">
+        <div className="mx-auto max-w-190">
           <ArticleHeader article={article} markdown={copyMarkdown ?? markdown} />
           <ArticleMarkdown markdown={markdown} />
           {endpoint && <EndpointExamples endpoint={endpoint} />}
