@@ -5,7 +5,7 @@ import Markdown from "react-markdown"
 import remarkGfm from "remark-gfm"
 import { CodeBlock } from "@/components/jalco/code-block"
 import { createHeadingId } from "@/utils/article-headings"
-import { articleSlugSchema } from "@/utils/docs-schemas"
+import { apiArticleSlugSchema, articleSlugSchema } from "@/utils/docs-schemas"
 
 function plainText(children: ReactNode): string {
   return Children.toArray(children)
@@ -38,6 +38,25 @@ export function ArticleMarkdown({ markdown }: { markdown: string }) {
           ),
           a: ({ children, href }) => {
             const internal = href?.match(/^\/([^?#]+)(?:#(.*))?$/)
+            const api =
+              internal?.[1] === "api-reference"
+                ? "overview"
+                : internal?.[1]?.startsWith("api-reference/")
+                  ? internal[1].slice(14)
+                  : undefined
+            const apiParsed = apiArticleSlugSchema.safeParse(api)
+            if (apiParsed.success)
+              return (
+                <Link
+                  to={apiParsed.data === "overview" ? "/api-reference" : "/api-reference/$slug"}
+                  params={{ slug: apiParsed.data }}
+                  hash={internal?.[2]}
+                  search={(previous) => ({ ...previous, q: "" })}
+                  className="font-medium text-accent-foreground underline decoration-primary/35 underline-offset-4 hover:decoration-primary"
+                >
+                  {children}
+                </Link>
+              )
             const parsed = articleSlugSchema.safeParse(internal?.[1])
             if (parsed.success)
               return (
@@ -81,13 +100,19 @@ export function ArticleMarkdown({ markdown }: { markdown: string }) {
                 code={plainText(child.props.children).replace(/\n$/, "")}
                 language={language}
                 title={
-                  language === "powershell"
-                    ? "PowerShell"
-                    : language === "dotenv"
-                      ? ".env"
-                      : language === "text"
-                        ? "Reference"
-                        : "Terminal"
+                  language === "json"
+                    ? "JSON"
+                    : language === "http"
+                      ? "HTTP"
+                      : language === "typescript"
+                        ? "TypeScript"
+                        : language === "powershell"
+                          ? "PowerShell"
+                          : language === "dotenv"
+                            ? ".env"
+                            : language === "text"
+                              ? "Reference"
+                              : "Terminal"
                 }
                 icon={<Terminal className="size-3.5 text-muted-foreground" aria-hidden="true" />}
                 className="my-5 shadow-none"

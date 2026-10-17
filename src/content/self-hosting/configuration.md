@@ -15,7 +15,7 @@ Inside your installation directory, the wizard writes:
 | `web/.env` | Web app environment settings. |
 | `.trackgeek.json` | Saved installation settings. |
 
-The wizard generates passwords and the Better Auth secret using cryptographically secure generation. Rerunning setup keeps your existing secrets and data volumes.
+The wizard generates passwords and the authentication secret using cryptographically secure generation. Rerunning setup keeps your existing secrets and data volumes.
 
 ## Keep configuration private
 

@@ -20,6 +20,28 @@ export const articleSlugSchema = z.enum([
   "project-structure",
 ])
 
+export const apiArticleSlugSchema = z.enum([
+  "overview",
+  "register-app",
+  "oauth2",
+  "rest-api",
+  "media-search",
+  "media-details",
+  "media-episodes",
+  "me",
+  "library",
+  "progress",
+  "catchup",
+  "progress-status",
+  "progress-book",
+  "progress-manga",
+  "progress-game",
+  "progress-episode",
+  "mcp",
+  "mcp-tools",
+  "errors",
+])
+
 export const docsSearchSchema = z.object({
   q: z.string().max(200).catch("").default(""),
   os: z.enum(["linux", "macos", "windows"]).catch("linux").default("linux"),

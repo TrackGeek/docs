@@ -34,10 +34,10 @@ function ArticleRoute() {
           {article.slug === "introduction" && <IntroductionLinks />}
           <ArticleBody article={article} markdown={markdown} />
           <ArticleFeedback slug={article.slug} />
-          <ArticlePagination slug={article.slug} />
+          <ArticlePagination article={article} />
         </div>
       </main>
-      <ArticleToc headings={headings} slug={article.slug} />
+      <ArticleToc headings={headings} article={article} />
     </div>
   )
 }

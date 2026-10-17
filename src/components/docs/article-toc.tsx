@@ -1,12 +1,13 @@
-import { Link } from "@tanstack/react-router"
+import { Link, useLocation } from "@tanstack/react-router"
 import { ArrowUpRight, GitFork, Pencil } from "lucide-react"
 import { Separator } from "@/components/ui/separator"
 import { repositoryUrl } from "@/constants/docs"
 import { useActiveHeading } from "@/hooks/use-active-heading"
-import type { ArticleHeading, ArticleSlug } from "@/types/docs"
+import type { Article, ArticleHeading } from "@/types/docs"
 import { cn } from "@/utils/cn"
 
-export function ArticleToc({ headings, slug }: { headings: ArticleHeading[]; slug: ArticleSlug }) {
+export function ArticleToc({ headings, article }: { headings: ArticleHeading[]; article: Article }) {
+  const pathname = useLocation({ select: (location) => location.pathname })
   const activeId = useActiveHeading(headings)
 
   return (
@@ -17,8 +18,7 @@ export function ArticleToc({ headings, slug }: { headings: ArticleHeading[]; slu
           {headings.map((heading) => (
             <li key={heading.id}>
               <Link
-                to="/$slug"
-                params={{ slug }}
+                to={pathname}
                 hash={heading.id}
                 search
                 resetScroll={false}
@@ -38,7 +38,7 @@ export function ArticleToc({ headings, slug }: { headings: ArticleHeading[]; slu
       <Separator className="my-6" />
       <div className="space-y-3 text-xs text-muted-foreground">
         <a
-          href={`${repositoryUrl}/edit/main/src/content/self-hosting/${slug}.md`}
+          href={`${repositoryUrl}/edit/main/src/content/${article.section ?? "self-hosting"}/${article.slug}.md`}
           target="_blank"
           rel="noreferrer"
           className="flex items-center gap-2 hover:text-foreground"
@@ -56,20 +56,22 @@ export function ArticleToc({ headings, slug }: { headings: ArticleHeading[]; slu
           Report an issue <ArrowUpRight className="ml-auto size-3" aria-hidden="true" />
         </a>
       </div>
-      <div className="mt-8 rounded-lg border bg-muted/30 p-4">
-        <p className="text-xs font-medium">Your data. Your instance.</p>
-        <p className="mt-2 text-xs leading-5 text-muted-foreground">
-          A home for everything you love, running on your own hardware.
-        </p>
-        <Link
-          to="/$slug"
-          params={{ slug: "installation" }}
-          search={(previous) => ({ ...previous, q: "" })}
-          className="mt-3 inline-flex items-center gap-1.5 text-xs font-medium text-accent-foreground"
-        >
-          Get started <ArrowUpRight className="size-3" aria-hidden="true" />
-        </Link>
-      </div>
+      {!article.section && (
+        <div className="mt-8 rounded-lg border bg-muted/30 p-4">
+          <p className="text-xs font-medium">Your data. Your instance.</p>
+          <p className="mt-2 text-xs leading-5 text-muted-foreground">
+            A home for everything you love, running on your own hardware.
+          </p>
+          <Link
+            to="/$slug"
+            params={{ slug: "installation" }}
+            search={(previous) => ({ ...previous, q: "" })}
+            className="mt-3 inline-flex items-center gap-1.5 text-xs font-medium text-accent-foreground"
+          >
+            Get started <ArrowUpRight className="size-3" aria-hidden="true" />
+          </Link>
+        </div>
+      )}
     </aside>
   )
 }

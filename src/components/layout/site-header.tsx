@@ -1,4 +1,4 @@
-import { Link } from "@tanstack/react-router"
+import { Link, useLocation } from "@tanstack/react-router"
 import { GitFork, Search } from "lucide-react"
 import { SearchDialog } from "@/components/docs/search-dialog"
 import { Kbd } from "@/components/jalco/kbd"
@@ -13,6 +13,7 @@ import { useDocsSearch } from "@/hooks/use-docs-search"
 
 export function SiteHeader() {
   const search = useDocsSearch()
+  const api = useLocation({ select: (location) => location.pathname.startsWith("/api-reference") })
 
   return (
     <header className="sticky top-0 z-30 border-b bg-background/95 backdrop-blur-sm">
@@ -37,12 +38,16 @@ export function SiteHeader() {
             to="/$slug"
             params={{ slug: "introduction" }}
             search={{}}
-            className="relative flex h-full items-center text-sm font-medium after:absolute after:inset-x-0 after:bottom-0 after:h-0.5 after:bg-primary"
+            className={`relative flex h-full items-center text-sm ${!api ? "font-medium after:absolute after:inset-x-0 after:bottom-0 after:h-0.5 after:bg-primary" : "text-muted-foreground hover:text-foreground"}`}
           >
             Self-hosting
           </Link>
           {apiReferenceEnabled && (
-            <Link to="/api-reference" search={{}} className="text-sm text-muted-foreground hover:text-foreground">
+            <Link
+              to="/api-reference"
+              search={{}}
+              className={`relative flex h-full items-center text-sm ${api ? "font-medium after:absolute after:inset-x-0 after:bottom-0 after:h-0.5 after:bg-primary" : "text-muted-foreground hover:text-foreground"}`}
+            >
               API Reference
             </Link>
           )}

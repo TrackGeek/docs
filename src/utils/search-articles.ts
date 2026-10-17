@@ -1,4 +1,4 @@
-import { articles } from "@/constants/docs"
+import { allArticles } from "@/constants/docs"
 
 export function searchArticles(query: string) {
   const terms = query
@@ -6,8 +6,8 @@ export function searchArticles(query: string) {
     .trim()
     .split(/[\s_-]+/)
     .filter(Boolean)
-  if (!terms.length) return [...articles]
-  return articles
+  if (!terms.length) return [...allArticles]
+  return allArticles
     .flatMap((article) => {
       const title = article.title.toLowerCase()
       const text = [title, article.description, article.group, ...article.keywords]

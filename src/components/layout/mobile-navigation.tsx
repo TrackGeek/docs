@@ -22,7 +22,7 @@ export function MobileNavigation() {
         <SheetContent side="left" className="w-80 overflow-y-auto">
           <SheetHeader>
             <SheetTitle>TrackGeek Docs</SheetTitle>
-            <SheetDescription>Your guide to self-hosting.</SheetDescription>
+            <SheetDescription>Self-hosting guides and API Reference.</SheetDescription>
           </SheetHeader>
           <div className="px-4 pb-6">
             <DocsNavigation onNavigate={() => setOpen(false)} />
