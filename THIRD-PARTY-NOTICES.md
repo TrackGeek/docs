@@ -1,6 +1,6 @@
 # Third-party components
 
-`src/components/jalco/` contains components from [jal-co/ui](https://github.com/jal-co/ui), installed through the @jalco shadcn registry. CodeBlock has been adapted for client-side React and lazy highlighting; component imports use this project's aliases.
+`src/components/jalco/` contains components from [jal-co/ui](https://github.com/jal-co/ui), installed through the @jalco shadcn registry. CodeBlock has been adapted for client-side React and lazy highlighting; component imports use this project's aliases. RequestViewer is adapted from the registry's Request Viewer with Radix tabs, copyable request/response examples, responsive headers, and optional timing data. Its header and timing panels live in dedicated files.
 
 MIT License
 

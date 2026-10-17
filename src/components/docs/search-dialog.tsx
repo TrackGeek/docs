@@ -9,8 +9,9 @@ import {
   CommandList,
   CommandSeparator,
 } from "@/components/ui/command"
-import { articleGroups } from "@/constants/docs"
+import { apiArticleGroups, articleGroups } from "@/constants/docs"
 import type { Article } from "@/types/docs"
+import { getArticleLocation } from "@/utils/article-location"
 
 interface SearchDialogProps {
   open: boolean
@@ -28,7 +29,7 @@ export function SearchDialog({ open, setOpen, query, setQuery, results }: Search
       open={open}
       onOpenChange={setOpen}
       title="Search documentation"
-      description="Find installation guides, configuration help, and management commands."
+      description="Find self-hosting guides, OAuth2 help, REST endpoints, and MCP tools."
       shouldFilter={false}
     >
       <CommandInput placeholder="Search the documentation…" value={query} onValueChange={setQuery} maxLength={200} />
@@ -37,7 +38,7 @@ export function SearchDialog({ open, setOpen, query, setQuery, results }: Search
           <Search className="mx-auto mb-3 size-5 text-muted-foreground" aria-hidden="true" />
           No guides found. Try “Docker”, “keys”, or “backup”.
         </CommandEmpty>
-        {articleGroups.map((group) => {
+        {[...articleGroups, ...apiArticleGroups].map((group) => {
           const matches = results.filter((article) => article.group === group)
           if (!matches.length) return null
           return (
@@ -49,8 +50,7 @@ export function SearchDialog({ open, setOpen, query, setQuery, results }: Search
                   onSelect={() => {
                     setOpen(false)
                     void navigate({
-                      to: "/$slug",
-                      params: { slug: article.slug },
+                      ...getArticleLocation(article),
                       search: (previous) => ({ ...previous, q: "" }),
                     })
                   }}

@@ -1,19 +1,20 @@
 import { Link } from "@tanstack/react-router"
 import { ArrowLeft, ArrowRight } from "lucide-react"
-import { articles } from "@/constants/docs"
-import type { ArticleSlug } from "@/types/docs"
+import { apiArticles, articles } from "@/constants/docs"
+import type { Article } from "@/types/docs"
+import { getArticleLocation } from "@/utils/article-location"
 
-export function ArticlePagination({ slug }: { slug: ArticleSlug }) {
-  const index = articles.findIndex((article) => article.slug === slug)
-  const previous = articles[index - 1]
-  const next = articles[index + 1]
+export function ArticlePagination({ article }: { article: Article }) {
+  const entries = article.section ? apiArticles : articles
+  const index = entries.findIndex((entry) => entry.slug === article.slug)
+  const previous = entries[index - 1]
+  const next = entries[index + 1]
 
   return (
     <nav aria-label="Article navigation" className="mt-6 grid grid-cols-2 gap-3">
       {previous ? (
         <Link
-          to="/$slug"
-          params={{ slug: previous.slug }}
+          {...getArticleLocation(previous)}
           search={(current) => ({ ...current, q: "" })}
           className="group rounded-lg border p-4 transition-colors hover:border-primary/50 hover:bg-muted/40"
         >
@@ -28,8 +29,7 @@ export function ArticlePagination({ slug }: { slug: ArticleSlug }) {
       )}
       {next && (
         <Link
-          to="/$slug"
-          params={{ slug: next.slug }}
+          {...getArticleLocation(next)}
           search={(current) => ({ ...current, q: "" })}
           className="group rounded-lg border p-4 text-right transition-colors hover:border-primary/50 hover:bg-muted/40"
         >

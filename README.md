@@ -81,19 +81,20 @@ Self-hosting instructions follow the [installer README](https://github.com/Track
 ```text
 src/
 ├── components/
-│   ├── api-reference/
 │   ├── docs/
 │   ├── jalco/
 │   ├── layout/
 │   └── ui/
 ├── constants/
 ├── content/
+│   ├── api-reference/
 │   └── self-hosting/
 ├── hooks/
 ├── routes/
 │   ├── __root.tsx
 │   ├── $slug.tsx
 │   ├── api-reference.tsx
+│   ├── api-reference_.$slug.tsx
 │   └── index.tsx
 ├── styles/
 ├── types/
@@ -233,3 +234,8 @@ Use `bun run preview` to inspect the production build locally before publishing.
 See the [contribution guidelines](.github/CONTRIBUTING.md) before opening a pull request on [TrackGeek/docs](https://github.com/TrackGeek/docs).
 
 </samp>
+
+
+## API Reference
+
+The published reference starts at `/api-reference`. Markdown lives in `src/content/api-reference/`; article metadata lives in `src/constants/docs.ts`. It covers OAuth application registration, Authorization Code with PKCE, REST tracking endpoints, MCP connection and tools, and error handling. Examples use `https://api.trackgeek.net`.

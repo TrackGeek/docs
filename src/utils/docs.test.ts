@@ -1,9 +1,9 @@
 import { describe, expect, test } from "bun:test"
 import { readFileSync } from "node:fs"
-import { articles } from "@/constants/docs"
+import { allArticles, apiArticles, articles } from "@/constants/docs"
 import { installCommands } from "@/constants/installation"
 import { getArticleHeadings } from "@/utils/article-headings"
-import { articleSlugSchema, docsSearchSchema } from "@/utils/docs-schemas"
+import { apiArticleSlugSchema, articleSlugSchema, docsSearchSchema } from "@/utils/docs-schemas"
 import { searchArticles } from "@/utils/search-articles"
 
 describe("documentation route contracts", () => {
@@ -21,16 +21,28 @@ describe("documentation route contracts", () => {
   })
 
   test("every article exists, every internal link resolves, heading anchors are unique", () => {
-    for (const article of articles) {
-      const markdown = readFileSync(new URL(`../content/self-hosting/${article.slug}.md`, import.meta.url), "utf8")
+    for (const article of allArticles) {
+      const markdown = readFileSync(
+        new URL(`../content/${article.section ?? "self-hosting"}/${article.slug}.md`, import.meta.url),
+        "utf8",
+      )
       expect(markdown.length).toBeGreaterThan(300)
       const headings = getArticleHeadings(markdown)
       expect(headings.length).toBeGreaterThan(0)
       expect(new Set(headings.map((heading) => heading.id)).size).toBe(headings.length)
       for (const link of markdown.matchAll(/\]\(\/([^\s)#]+)(?:#([^)]*))?\)/g)) {
-        expect(articleSlugSchema.safeParse(link[1]).success).toBe(true)
+        const api =
+          link[1] === "api-reference"
+            ? "overview"
+            : link[1].startsWith("api-reference/")
+              ? link[1].slice(14)
+              : undefined
+        expect((api ? apiArticleSlugSchema : articleSlugSchema).safeParse(api ?? link[1]).success).toBe(true)
         if (link[2]) {
-          const target = readFileSync(new URL(`../content/self-hosting/${link[1]}.md`, import.meta.url), "utf8")
+          const target = readFileSync(
+            new URL(`../content/${api ? "api-reference" : "self-hosting"}/${api ?? link[1]}.md`, import.meta.url),
+            "utf8",
+          )
           expect(getArticleHeadings(target).map((heading) => heading.id)).toContain(link[2])
         }
       }
@@ -49,7 +61,15 @@ describe("documentation route contracts", () => {
     expect(searchArticles("autostartup")[0].slug).toBe("automatic-startup")
     expect(searchArticles("  docker  ").length).toBeGreaterThan(0)
     expect(searchArticles("nonexistent-value")).toEqual([])
-    expect(searchArticles("  ")).toHaveLength(articles.length)
+    expect(searchArticles("  ")).toHaveLength(allArticles.length)
+  })
+
+  test("API reference pages are discoverable by integration terms", () => {
+    expect(apiArticleSlugSchema.options).toHaveLength(apiArticles.length)
+    for (const article of apiArticles) expect(apiArticleSlugSchema.safeParse(article.slug).success).toBe(true)
+    expect(searchArticles("pkce").map((article) => article.slug)).toContain("oauth2")
+    expect(searchArticles("set_book_progress").map((article) => article.slug)).toContain("mcp-tools")
+    expect(searchArticles("rest").map((article) => article.slug)).toContain("rest-api")
   })
 
   test("install commands stay aligned with the supplied README", () => {

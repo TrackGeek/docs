@@ -3,7 +3,9 @@ import { ChevronRight } from "lucide-react"
 import { useEffect } from "react"
 import { AiCopyButton } from "@/components/jalco/ai-copy-button"
 import { Badge } from "@/components/ui/badge"
+import { apiArticles, articles } from "@/constants/docs"
 import type { Article } from "@/types/docs"
+import { getArticleLocation } from "@/utils/article-location"
 
 export function ArticleHeader({ article, markdown }: { article: Article; markdown: string }) {
   useEffect(() => {
@@ -14,12 +16,11 @@ export function ArticleHeader({ article, markdown }: { article: Article; markdow
     <div className="mb-8">
       <div className="mb-9 flex items-center gap-2 text-xs text-muted-foreground">
         <Link
-          to="/$slug"
-          params={{ slug: "introduction" }}
+          {...getArticleLocation(article.section ? apiArticles[0] : articles[0])}
           search={(previous) => ({ ...previous, q: "" })}
           className="hover:text-foreground"
         >
-          Self-hosting
+          {article.section ? "API Reference" : "Self-hosting"}
         </Link>
         <ChevronRight className="size-3" aria-hidden="true" />
         <span>{article.group}</span>
@@ -27,7 +28,7 @@ export function ArticleHeader({ article, markdown }: { article: Article; markdow
       <div className="mb-4 flex items-center justify-between gap-4">
         <Badge variant="secondary" className="gap-1.5 bg-accent font-medium text-accent-foreground">
           <span className="size-1.5 rounded-full bg-primary" />
-          Self-hosting guide
+          {article.section ? "API Reference" : "Self-hosting guide"}
         </Badge>
         <AiCopyButton
           value={`# ${article.title}\n\n${article.description}\n\n${markdown}`}

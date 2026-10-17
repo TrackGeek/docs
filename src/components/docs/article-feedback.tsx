@@ -2,9 +2,8 @@ import { ThumbsDown, ThumbsUp } from "lucide-react"
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { repositoryUrl } from "@/constants/docs"
-import type { ArticleSlug } from "@/types/docs"
 
-export function ArticleFeedback({ slug }: { slug: ArticleSlug }) {
+export function ArticleFeedback({ slug }: { slug: string }) {
   const [helpful, setHelpful] = useState(() => {
     try {
       return localStorage.getItem(`trackgeek-docs-helpful-${slug}`) === "true"

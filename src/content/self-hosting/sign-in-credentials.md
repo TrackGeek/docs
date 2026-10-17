@@ -6,7 +6,7 @@ Enter both values in the installer. Keep secrets private. If a provider limits a
 
 ## Choose the right callback URL
 
-A callback URL tells the provider where to send the browser after sign-in. Use your **API address**, followed by `/auth/callback/` and the provider name. TrackGeek uses `/auth`, rather than Better Auth's default `/api/auth`, in its [authentication configuration](https://github.com/TrackGeek/api/blob/main/src/modules/auth/config/auth.config.ts).
+A callback URL tells the provider where to send the browser after sign-in. Use your **API address**, followed by `/auth/callback/` and the provider name.
 
 For example, a default local Google callback is `http://localhost:408/auth/callback/google`. With a public API at `https://api.example.com`, it becomes `https://api.example.com/auth/callback/google`.
 
@@ -94,7 +94,7 @@ See Microsoft's guides to [registering an app](https://learn.microsoft.com/en-us
 3. Enable the user-information capability that includes **email addresses**, which TrackGeek's authentication provider needs.
 4. Copy **OAuth client ID** into `NOTION_CLIENT_ID` and **OAuth client secret** into `NOTION_CLIENT_SECRET`. An internal integration token is not a replacement for this pair.
 
-See [Notion's authorization guide](https://developers.notion.com/guides/get-started/authorization) for public connection and review requirements, and [Better Auth's Notion setup](https://better-auth.com/docs/authentication/notion) for the required user-information capability.
+See [Notion's authorization guide](https://developers.notion.com/guides/get-started/authorization) for public connection and review requirements.
 
 ## Spotify
 

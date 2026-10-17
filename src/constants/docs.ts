@@ -1,3 +1,4 @@
+import { apiEndpoints } from "@/constants/api-endpoints"
 import type { Article } from "@/types/docs"
 
 export const articles = [
@@ -185,4 +186,90 @@ export const articleGroups = [
   "Resources",
 ] as const
 export const repositoryUrl = "https://github.com/TrackGeek/docs"
-export const apiReferenceEnabled = import.meta.env.VITE_ENABLE_API_REFERENCE === "true"
+
+export const apiArticles: readonly Article[] = (
+  [
+    {
+      slug: "overview",
+      title: "API Reference",
+      description: "Build TrackGeek integrations with OAuth2, REST, and MCP.",
+      group: "API overview",
+      keywords: ["api", "reference", "quickstart", "api.trackgeek.net"],
+    },
+    {
+      slug: "register-app",
+      title: "Register an application",
+      description: "Create a client ID and choose callbacks and permissions.",
+      group: "OAuth2",
+      keywords: ["oauth", "client", "secret", "registration", "dcr", "discord", "nuvio"],
+    },
+    {
+      slug: "oauth2",
+      title: "OAuth2 authorization",
+      description: "Connect an account with PKCE, exchange codes, and refresh tokens.",
+      group: "OAuth2",
+      keywords: ["oauth2", "pkce", "scope", "state", "token", "refresh", "consent", "resource", "openid"],
+    },
+    {
+      slug: "rest-api",
+      title: "REST endpoints",
+      description: "Search media, read your library, and update your progress.",
+      group: "Integrations",
+      keywords: ["rest", "endpoints", "library", "pages", "book", "manga", "game", "movie", "episode", "progress"],
+    },
+    {
+      slug: "mcp",
+      title: "Connect an AI client",
+      description: "Add TrackGeek to an AI client using Streamable HTTP and OAuth.",
+      group: "Integrations",
+      keywords: ["mcp", "ai", "assistant", "connect", "http", "json", "rpc"],
+    },
+    {
+      slug: "mcp-tools",
+      title: "MCP tools",
+      description: "Inputs, permissions, and examples for all twelve TrackGeek tools.",
+      group: "Integrations",
+      keywords: [
+        "mcp",
+        "tools",
+        "search_media",
+        "get_media_details",
+        "get_my_profile",
+        "get_my_library",
+        "get_my_progress",
+        "get_my_catchup",
+        "get_episodes",
+        "set_media_status",
+        "set_book_progress",
+        "set_manga_progress",
+        "set_game_progress",
+        "set_episode_status",
+      ],
+    },
+    {
+      slug: "errors",
+      title: "Errors & limits",
+      description: "Fix authorization errors, handle validation, and retry safely.",
+      group: "Integrations",
+      keywords: ["error", "401", "403", "409", "429", "rate", "limit", "retry", "revocation"],
+    },
+    ...apiEndpoints.map(({ slug, title, description, group, method, keywords, path, scope }) => ({
+      slug,
+      title,
+      description,
+      group,
+      method,
+      keywords: [...keywords, path, ...(scope ? [scope] : [])],
+    })),
+  ] satisfies Article[]
+).map((article) => ({ ...article, section: "api-reference" as const }))
+
+export const apiArticleGroups = [
+  "API overview",
+  "OAuth2",
+  "Integrations",
+  "Media",
+  "Account & library",
+  "Progress",
+] as const
+export const allArticles: readonly Article[] = [...articles, ...apiArticles]
